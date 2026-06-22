@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <climits>
 using namespace std;
 
 template <typename Set, typename T> bool contains(const Set &s, const T &x) {
@@ -10,65 +11,55 @@ template <typename Set, typename T> bool contains(const Set &s, const T &x) {
 class Solution {
 public:
   string minWindow(string s, string t) {
-    unordered_map<int, int> window, count;
-    int resSize = INT_MAX;
-    vector<int> resIdx = {-1, -1};
+    unordered_map<char, int> count, window;
+    int have = 0, need = t.length();
 
-    int need = t.length(), have = 0;
+    int resLen = INT_MAX;
+    vector<int> resIdxs = {-1, -1};
 
-    // fill in the count
-    for (int i = 0; i < t.length(); i++) {
-      count[t[i]]++;
-    }
+    for (int c : t)
+      count[c]++;
 
     int l = 0;
-    for (int r = 0; r < s.length(); r++) {
-      int c = s[r];
+    for (int r = 0; r < s.size(); r++) {
+      char c = s[r];
       window[c]++;
 
-      // do we have what we need
-      if (contains(count, c) && window[c] == count[c]) {
+      if (contains(count, c) && window[c] <= count[c])
         have++;
-      }
 
-      // cout << have << "\t" << need << endl;
-      // update the left pointer
       while (have == need) {
-        // cout << "length" << (r - l + 1) << endl;
-        if ((r - l + 1) < resSize) {
-          resSize = r - l + 1;
-          resIdx = {l, r};
+        // update the result if min is found
+        int currLen = r - l + 1;
+        if (currLen < resLen) {
+          resLen = currLen;
+          resIdxs = {l, r};
         }
 
-        int c = s[l];
-
-        // also decrease the have
-        if (contains(count, c) && window[c] == count[c]) {
+        // update the left pointer
+        char ch = s[l];
+        // update the have count
+        if (contains(count, ch) && window[ch] == count[ch])
           have--;
-        }
 
-        window[c]--;
+        window[ch] -= 1;
         l++;
       }
     }
 
-    // cout << resIdx[0] << "\t" << resIdx[1] << endl;
-    if (resIdx[0] < resIdx[1])
-      return s.substr(resIdx[0], resIdx[1]);
-    else
-      return "";
+    if (resIdxs[0] != -1 && resIdxs[1] != -1) {
+      return s.substr(resIdxs[0], resLen);
+    }
+
+    return "";
   }
 };
 
 int main() {
-  string s = "ADOBECODEBANC", t = "ABC";
+  string s = "aa", t = "aa";
   Solution sol;
 
   string ans = sol.minWindow(s, t);
-  if (ans == "BANC") {
-    cout << "PASS" << endl;
-  } else {
-    cout << "FAIL" << endl;
-  }
+  cout << ans;
   return 0;
 }

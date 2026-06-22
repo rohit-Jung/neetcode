@@ -15,25 +15,28 @@ class Solution {
 public:
   vector<int> maxSlidingWindow(vector<int> w, int k) {
     // monotonic Deq
+    // storing indexes in the deque easier
     deque<int> dq;
+    vector<int> sol;
 
     int l = 0;
-    vector<int> sol;
     for (int r = 0; r < w.size(); r++) {
+      // remove the least ones
       while (!dq.empty() && w[dq.back()] < w[r]) {
         dq.pop_back();
       }
 
       dq.emplace_back(r);
 
-      // we need to pop from from if we move our left index
-      // but we still have the left index in the deq
-      // which is why we are storing the index rather than element
-      if (l > dq[0]) {
+      // remove from the front if we have crossed the index
+      if (l > dq.front()) {
         dq.pop_front();
       }
 
-      if ((r + 1) >= k) {
+      // we want to see if we have crossed k window
+      int windowLen = (r - l + 1);
+      if (windowLen + 1 > k) {
+        // we always have the max on front
         sol.emplace_back(w[dq.front()]);
         l++;
       }
@@ -42,3 +45,16 @@ public:
     return sol;
   }
 };
+
+int main() {
+  // vector<int> w = {1, 3, -1, -3, 5, 4, 6, 7};
+  vector<int> w = {8, 7, 6, 9};
+  int k = 2;
+
+  Solution sol;
+  vector<int> ans = sol.maxSlidingWindow(w, k);
+  for (int el : ans) {
+    cout << el << ",";
+  }
+  return 0;
+}
