@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include <stack>
 using namespace std;
 
 template <typename Set, typename T> bool contains(const Set &s, const T &x) {
@@ -8,17 +7,28 @@ template <typename Set, typename T> bool contains(const Set &s, const T &x) {
 
 class MinStack {
 public:
-  MinStack() {
-    stack<int> s;
-    stack<int> m;
+  stack<int> st;
+
+  // minimum value we have added so far
+  // top will have the minimum value ? so far on that seq
+  stack<int> minStack;
+
+  MinStack() {}
+
+  // [ 1, 2, 8 ] 4
+  void push(int val) {
+    st.push(val);
+    // if the val is minimum
+    int minVal = !minStack.empty() ? min(minStack.top(), val) : val;
+    minStack.push(minVal);
   }
 
-  // idk oop in cpp
-  void push(int val) { s.push(val); }
+  void pop() {
+    st.pop();
+    minStack.pop();
+  }
 
-  void pop() {}
+  int top() { return st.top(); }
 
-  int top() {}
-
-  int getMin() {}
+  int getMin() { return minStack.top(); }
 };

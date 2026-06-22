@@ -1,4 +1,6 @@
 #include <bits/stdc++.h>
+#include <cctype>
+#include <string>
 using namespace std;
 
 template <typename Set, typename T> bool contains(const Set &s, const T &x) {
@@ -6,7 +8,7 @@ template <typename Set, typename T> bool contains(const Set &s, const T &x) {
 }
 
 class Solution {
-public:
+private:
   int evaluateOperation(int a, int b, char operation) {
     switch (operation) {
     case '+':
@@ -22,26 +24,34 @@ public:
     }
   }
 
-  int evalPolishNotation(string s) {
-    vector<int> store;
+public:
+  // store in a stack and operate when sign encountered
+  int evalRPN(vector<string> &tokens) {
+    stack<int> store;
 
-    for (auto c : s) {
-      if (c != '+' && c != '-' && c != '*' && c != '/') {
-        store.push_back(c - '0');
+    for (string c : tokens) {
+      if (c.size() > 1 || isdigit(c[0])) {
+        store.push(stoi(c));
       } else {
         if (store.size() < 2) {
           return 0;
         }
 
-        int last = store[store.size() - 1];
-        int secondLast = store[store.size() - 2];
-        int ans = evaluateOperation(secondLast, last, c);
+        int last = store.top();
+        store.pop();
+        int secondLast = store.top();
+        store.pop();
 
-        store.pop_back();
-        store.pop_back();
-        store.push_back(ans);
+        int ans = evaluateOperation(secondLast, last, c[0]);
+        store.push(ans);
       }
     }
-    return store[0];
+    return store.top();
   }
 };
+
+int main() {
+  vector<string> tokens = {"4", "13", "5", "/", "+"};
+  Solution sol;
+  cout << sol.evalRPN(tokens);
+}
