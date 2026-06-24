@@ -20,17 +20,17 @@ public:
       comb.push_back({position[i], speed[i]});
     }
 
-    // if two cars reaches the target at same time means they became a car fleet
-    // traverse from the back: it could collide and slow down
-    vector<int> st;
-
     // this is ascending sort
     sort(comb.begin(), comb.end());
 
+    // if two cars reaches the target at same time means they became a car fleet
+    // traverse from the back: it could collide and slow down
+    vector<double> st;
+
+    // go from the nearest car to target
     for (int i = comb.size() - 1; i >= 0; i--) {
-      int pos = comb[i].first;
-      int sp = comb[i].second;
-      int time = (target - pos) / sp;
+      // be sure to keep the time double
+      double time = double((target - comb[i].first)) / comb[i].second;
       st.push_back(time);
 
       // if we have two carfleets then remove the second last ?
