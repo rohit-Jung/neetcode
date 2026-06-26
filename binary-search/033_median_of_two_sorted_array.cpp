@@ -9,57 +9,50 @@ class Solution {
 public:
   // solution must run on log(m + n)
   double findMedianSortedArrays(vector<int> &nums1, vector<int> &nums2) {
-    int total = nums1.size() + nums2.size();
-    int half = total / 2;
+    // a should be the shortest
+    vector<int> &a = nums1.size() > nums2.size() ? nums2 : nums1;
+    vector<int> &b = nums1.size() > nums2.size() ? nums1 : nums2;
 
-    const vector<int> &a = nums1.size() <= nums2.size() ? nums1 : nums2;
-    const vector<int> &b = nums1.size() <= nums2.size() ? nums2 : nums1;
+    int total = a.size() + b.size();
+    // +1 makes left partition hold extra elem so max(l1, l2) can be done
+    // a: [1 3 | 8]
+    // b: [2 | 4 5]
+    int half = (total + 1) >> 1;
 
-    int l = 0, r = a.size();
-
-    // binary search in shorter array log(shorter)
-    while (true) {
-      int mid1 = l + (r - l) / 2;
-
-      // how many to pickup from array 2
+    int lo = 0;
+    int hi = a.size();
+    while (lo <= hi) {
+      // left shift is integer division
+      int mid1 = lo + ((hi - lo) >> 1);
       int mid2 = half - mid1;
 
-      // since you are taking mid on other side so [mid1 - 1] for left
-      int aLeft = mid1 > 0 ? a[mid1 - 1] : INT_MIN;
-      int aRight = (mid1 < (int)a.size()) ? a[mid1] : INT_MAX;
+      // get the elems for comparison
+      int l1 = mid1 > 0 ? a[mid1 - 1] : INT_MIN;
+      int l2 = (mid2 > 0) ? b[mid2 - 1] : INT_MIN;
 
-      int bLeft = mid2 > 0 ? b[mid2 - 1] : INT_MIN;
-      int bRight = (mid2 < (int)b.size()) ? b[mid2] : INT_MAX;
+      int r1 = mid1 < a.size() ? a[mid1] : INT_MAX;
+      int r2 = mid2 < b.size() ? b[mid2] : INT_MAX;
 
-      // check if the partition is right
+      // check the partition is correct
       // entire left <= entire right
-      if (aLeft <= bRight && bLeft <= aRight) {
-        // two cases: odd and even
-        if (total % 2) {
-          return min(aRight, bRight);
-        }
+      if (l1 <= r2 && l2 <= r1) {
+        // odd even check
+        if (total & 1)
+          return max(l1, l2);
 
-        return ((max(aLeft, bLeft) + min(aRight, bRight)) / 2.0);
+        return (max(l1, l2) + min(r1, r2)) / 2.0;
       }
 
-      // make the box of 4 and try comparing, aleft and bright
-      // you would notice you need to go back | reduce the search space
-      // take less in a as there are more since the condition is invalid
-      if (aLeft > bRight) {
-        // understand this
-        r = mid1 - 1; // why -1 ? you are taking mid1 also
+      // make the box of 4 and try comparing, l1 and l2
+      // l1 is greater so we have more elems on a(l1)? how do we decrease ?
+      // just decrease the high
+      if (l1 > r2) {
+        hi = mid1 - 1;
       } else {
-        l = mid1 + 1;
+        lo = mid1 + 1;
       }
     }
 
     return 0.0;
   }
 };
-
-int main() {
-  Solution sol{};
-  vector<int> nums1 = {1, 2}, nums2 = {3};
-
-  cout << sol.findMedianSortedArrays(nums1, nums2);
-}
