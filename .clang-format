@@ -1,0 +1,72 @@
+TabWidth: 2
+IndentWidth: 2
+UseTab: Never
+
+Language: Cpp
+Standard: Latest
+
+PointerAlignment: Left
+
+#   someLongFunction(
+#       argument1, argument2);
+AlignAfterOpenBracket: false
+
+# int aaaa = 12;
+# int b    = 23;
+# int ccc  = 23;
+AlignConsecutiveAssignments: true
+
+# AlignEscapedNewlinesLeft (bool)
+# If true, aligns escaped newlines as far left as possible. Otherwise puts them into the right-most column.
+AlignEscapedNewlinesLeft: true
+
+# int aaa = bbbbbbbbbbbbbbb +
+#           ccccccccccccccc;
+AlignOperands: false
+
+# AlignTrailingComments (bool)
+# If true, aligns trailing comments.
+AlignTrailingComments: true
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: false
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
+
+# This flag is mean to make cases where there are multiple multiline strings in a file look more consistent. Thus, it will only take effect if wrapping the string at that point leads to it being indented ContinuationIndentWidth spaces from the start of the line.
+AlwaysBreakBeforeMultilineStrings: false
+
+# AlwaysBreakTemplateDeclarations (bool)
+AlwaysBreakTemplateDeclarations: false
+
+# If false, a function call’s arguments will either be all on the same line or will have one line each.
+BinPackArguments: true
+
+# If false, a function declaration’s or function definition’s parameters will either all be on the same line or will have one line each.
+BinPackParameters: true  
+
+# If true, ternary operators will be placed after line breaks.
+BreakBeforeTernaryOperators: true
+
+# Always break constructor initializers before commas and align the commas with the colon.
+BreakConstructorInitializersBeforeComma: false
+
+# The column limit.
+# A column limit of 0 means that there is no column limit. In this case, clang-format will respect the input’s line breaking decisions within statements unless they contradict other rules.
+ColumnLimit: 80
+
+# Indent width for line continuations.
+ContinuationIndentWidth: 0
+Cpp11BracedListStyle: false
+SpaceBeforeCpp11BracedList: true
+
+# The maximum number of consecutive empty lines to keep.
+MaxEmptyLinesToKeep: 1
+
+SpaceBeforeParens: Never
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 2
+SpacesInAngles: false
+SpacesInCStyleCastParentheses: false
+
