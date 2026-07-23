@@ -9,7 +9,7 @@ PointerAlignment: Left
 
 #   someLongFunction(
 #       argument1, argument2);
-AlignAfterOpenBracket: false
+AlignAfterOpenBracket: true
 
 # int aaaa = 12;
 # int b    = 23;
