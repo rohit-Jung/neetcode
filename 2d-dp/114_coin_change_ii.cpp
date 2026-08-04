@@ -22,10 +22,10 @@ private:
 
   int bottomup(int amount, vector<int>& coins) {
     vector<int> dp(amount + 1);
-    dp[0] = 1; // only one way to make amount 0: use no coins
+    dp[0] = 1;  // only one way to make amount 0: use no coins
 
-    for (int coin: coins) { // update the dp array 
-      for (int j = coin; j<=amount; j++) { // 
+    for(int coin : coins) {                  // update the dp array
+      for(int j = coin; j <= amount; j++) {  //
         dp[j] += dp[j - coin];
       }
     }
