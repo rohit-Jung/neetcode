@@ -64,10 +64,3 @@ public:
     return solve(0, 0, s, t, dp);
   }
 };
-
-int main() {
-  string s = "caaat";
-  string t = "cat";
-  Solution sol {};
-  cout << sol.numDistinct(s, t);
-}
